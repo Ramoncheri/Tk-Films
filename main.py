@@ -5,6 +5,7 @@ import films
 
 class MainApp(Tk):
     def __init__(self):
+        Tk.__init__(self)
         self.title('Busca peliculas')
         searcher= films.Controller(self)
         searcher.pack()
