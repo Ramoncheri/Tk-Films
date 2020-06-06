@@ -2,6 +2,8 @@ from tkinter import *
 from tkinter import ttk
 import requests
 from configparser import *
+from PIL import Image, ImageTk
+from io import BytesIO
 
 config= ConfigParser()
 config.read('config.ini')
@@ -62,7 +64,10 @@ class Film(ttk.Frame):
 
         self.lblTitle= ttk.Label(self, text="Titulo")
         self.lblYear= ttk.Label(self, text= "1900")
+        self.image= Label(self)
+        self.photo= None
 
+        self.image.pack(side= TOP)
         self.lblTitle.pack(side=TOP)
         self.lblYear.pack(side= TOP)
 
@@ -77,6 +82,17 @@ class Film(ttk.Frame):
         self.lblTitle.config(text= self.__mostrada.get("titulo"))
         self.lblYear.config(text= self.__mostrada.get("anno"))
         
+        if self.__mostrada.get("poster")== "N/A":
+            return
+        
+        r= requests.get(self.__mostrada.get("poster"))
+        if r.status_code== 200:
+            bimage= r.content
+            image= Image.open(BytesIO(bimage))
+            self.photo= ImageTk.PhotoImage(image)
+
+            self.image.config(image= self.photo)
+            self.image.image= self.photo
 
         
         
