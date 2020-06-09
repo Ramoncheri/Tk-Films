@@ -40,10 +40,16 @@ class Controller(ttk.Frame):
         self.film= Film(self)
         self.film.grid(column=0, row=1)
 
-        self.botones= Botones(self, self.siguiente)
-        self.botones.grid(column=0, row= 2)
+        self.btn_volver= Botones(self,'Volver', self.anterior)
+        self.btn_siguiente= Botones(self,'Siguiente',self.siguiente)
+
+        self.btn_volver.grid(column=0, row=2)
+        self.btn_siguiente.grid(column=1, row=2)
+        
+        #self.botones= Botones(self, self.siguiente)
+        #self.botones.grid(column=0, row= 2)
         self.films={}
-        self.n=1
+        self.n=0
 
         
     def busca(self, peli):
@@ -63,14 +69,18 @@ class Controller(ttk.Frame):
         
 
     def siguiente(self):
-        
-        
+        self.n += 1
         result_peli= self.films.get("Search")[self.n]
         peli_a_mostrar={"titulo":result_peli.get("Title"),"anno": result_peli.get("Year"), "poster": result_peli.get("Poster")}
         self.film.mostrada= peli_a_mostrar
-        self.film= Film(self)
-        self.film.grid(column=0, row=1)
-        self.n += 1
+        
+
+    def anterior(self):
+        self.n -= 1
+        result_peli= self.films.get("Search")[self.n]
+        peli_a_mostrar={"titulo":result_peli.get("Title"),"anno": result_peli.get("Year"), "poster": result_peli.get("Poster")}
+        self.film.mostrada= peli_a_mostrar
+        
             
 
 
@@ -82,7 +92,7 @@ class Controller(ttk.Frame):
 class Film(ttk.Frame):
 
     __mostrada= None
-    __mostrada1= None
+    #__mostrada1= None
     
     
     def __init__(self, parent):
@@ -130,14 +140,17 @@ class Film(ttk.Frame):
 
     
 class Botones(ttk.Frame):
-    def __init__(self, parent, command):
+    def __init__(self, parent, text, command):
         ttk.Frame.__init__(self, parent)
+        self.grid_propagate()
 
-        self.btn_volver= ttk.Button(self, text="Volver", command= None)
-        self.btn_siguiente= ttk.Button(self, text="Siguiente", command= command)
+        btn= ttk.Button(self, text=text, command= command)
+        #self.btn_volver= ttk.Button(self, text="Volver", command= command)
+        #self.btn_siguiente= ttk.Button(self, text="Siguiente", command= command)
 
-        self.btn_volver.pack(side= LEFT)
-        self.btn_siguiente.pack(side= RIGHT)
+        btn.pack()
+        #self.btn_volver.pack(side= LEFT)
+        #self.btn_siguiente.pack(side= RIGHT)
     
     
 
